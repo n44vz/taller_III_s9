@@ -67,6 +67,8 @@ if hora_seleccionada != 'Todos':
         
 datos_filtrados = datos[mask]
 
+st.divider()
+
 st.subheader('Métricas de interés')
 
 col1, col2, col3 = st.columns(3)
