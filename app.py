@@ -1,5 +1,10 @@
 import streamlit as st 
 import plotly.express as px 
+import time
+import sqlite3
+
+# Transformaciones necesarias 
+
 
 st.title("Título")
 
@@ -63,7 +68,7 @@ mask = (
 )
 
 if hora_seleccionada != 'Todos':
-    mask = mask & (datos['hora'] == hora_seleccionada)\
+    mask = mask & (datos['hora'] == hora_seleccionada)
         
 datos_filtrados = datos[mask]
 
@@ -109,3 +114,77 @@ fig = px.scatter(
 
 st.plotly_chart(fig)
 
+
+cb_globos = st.checkbox('cb1')
+st.write(cb_globos)
+
+if cb_globos:
+    st.snow()
+
+st.divider()
+
+iris = px.data.iris()   
+
+col4, col5, col6 = st.columns([1,1,1])
+
+with col4: 
+    st.write("Especies:")
+    cb1 = st.checkbox('a. Setosa')
+    cb2 = st.checkbox('b. Versicolor')
+    cb3 = st.checkbox('c. Virginica')
+    
+    
+with col5: 
+    st.write("Localización:")
+    cb4 = st.checkbox('a. América')
+    cb5 = st.checkbox('b. Oceanía')
+    cb6 = st.checkbox('c. Asia')
+    
+with col6: 
+    st.write("Colores:")
+    cb7 = st.checkbox('a. Azul')
+    cb8 = st.checkbox('b. Rojo')
+    cb9 = st.checkbox('c. Verde')
+    
+st.divider()
+
+especies = []
+    
+if cb1:
+    especies.append('setosa')
+    
+if cb2:
+    especies.append('versicolor')
+       
+if cb3:
+    especies.append('virginica')
+    
+st.write(especies)
+    
+mask = iris['species'].isin(especies)
+vista = iris[mask]
+st.dataframe(vista)
+
+st.divider()
+
+_LOREM_IPSUM = """
+Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+"""
+
+def escribir_texto(): 
+    for word in _LOREM_IPSUM.split(" "):
+        yield word + " "
+        time.sleep(0.2)
+        
+if st.button("Escribir"):
+    st.write_stream(escribir_texto)
+
+st.divider()
+
+conn = sqlite3.connect('lahman_1871-2022.sqlite')
+
+st.write(conn)
+
+conn.close()
